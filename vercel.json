@@ -3,14 +3,14 @@
     "name": "OPEN_STYLE_Server",
     "builds": [
       {
-          "src": "server.cjs",
+          "src": "server.js",
           "use": "@vercel/node"
       }
   ],
   "routes": [
     {
         "src": "/(.*)",
-        "dest": "/server.cjs"
+        "dest": "/server.js"
     }
 ]
 }

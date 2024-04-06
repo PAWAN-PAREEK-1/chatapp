@@ -1,46 +1,44 @@
-const socket = io()
-let messageArea =  document.querySelector(".messages")
-let userName
+const socket = io();
+let messageArea = document.querySelector(".messages");
+let userName;
 
 do {
-    userName = prompt('please enter your userName')
+    userName = prompt('Please enter your username');
 } while (!userName);
 
+let textarea = document.querySelector("#textarea");
+let sendButton = document.querySelector("button[type='submit']");
 
-let textarea = document.querySelector("#textarea")
-
-
-textarea.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') {
-        sendMessage(e.target.value);
+// Function to send message
+let sendMessage = () => {
+    let msg = textarea.value.trim();
+    if (msg !== '') {
+        let message = {
+            user: userName,
+            message: msg
+        };
+        appendMessage(message, 'sent');
+        scrollToBottom();
+        textarea.value = '';
+        socket.emit('message', message);
     }
+};
 
+// Listen for clicks on the "Send" button
+sendButton.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent form submission
+    sendMessage();
 });
 
-
-
-
-let sendMessage= (msg)=>{
-
-    let message = {
-        user:userName,
-        message:msg.trim()
+// Listen for "Enter" key press in textarea
+textarea.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent newline in textarea
+        sendMessage();
     }
+});
 
-    //Append
-
-    appendMessage(message,'sent')
-    scrollToBottom()
-    textarea.value=''
-    
-
-
-    //send to server
-
-    socket.emit('message',message)
-
-}
-
+// Append a message to the message area
 let appendMessage = (msg, type) => {
     let mainDiv = document.createElement('div');
     let className = type;
@@ -50,31 +48,21 @@ let appendMessage = (msg, type) => {
         <h4>${msg.user}</h4>
         <p>${msg.message}</p>
     `;
-
     mainDiv.innerHTML = markup;
-
     messageArea.appendChild(mainDiv);
 
     // Scroll to bottom after a short delay to allow DOM update
     setTimeout(scrollToBottom, 100);
 };
 
-
-
-//rescive message  
-
-socket.on('message',(message)=>{
-appendMessage(message,'received')
-scrollToBottom()
-
-})
-
+// Scroll to the bottom of the message area
 let scrollToBottom = () => {
-    console.log("Scrolling to bottom...");
-    console.log("scrollTop before:", messageArea.scrollTop);
-    console.log("scrollHeight:", messageArea.scrollHeight);
     messageArea.scrollTop = messageArea.scrollHeight;
-    console.log("scrollTop after:", messageArea.scrollTop);
-}
+};
 
+// Listen for incoming messages from the server
+socket.on('message', (message) => {
+    appendMessage(message, 'received');
+    scrollToBottom();
+});
 

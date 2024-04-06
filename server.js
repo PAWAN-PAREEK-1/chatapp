@@ -4,7 +4,6 @@ import { Server } from 'socket.io';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import cors from 'cors'
 
 dotenv.config();
 
@@ -18,16 +17,13 @@ const port = process.env.PORT || 3000;
 
 // Serve static files
 app.use(express.static(join(__dirname, '/')));
-app.use(cors())
-// Start the server
-server.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
-});
 
+// Route for serving the index.html file
 app.get('/', (req, res) => {
     res.sendFile(join(__dirname, '/index.html'));
 });
 
+// Socket.io connection
 io.on('connection', (socket) => {
     console.log("Connected");
 
@@ -36,4 +32,9 @@ io.on('connection', (socket) => {
     });
 });
 
-export default server;
+// Start the server only if it's not already listening
+if (!server.listening) {
+    server.listen(port, () => {
+        console.log(`Server is listening on port ${port}`);
+    });
+}

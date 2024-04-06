@@ -71,6 +71,13 @@ socket.on('message', (message) => {
 // Listen for user count update from the server
 // Listen for user count update from the server
 socket.on('user-count', (count) => {
-    userCount.textContent = `Users connected: ${count}`;
-    console.log("Received user count:", count); // Add this line
+    if (count === 1) {
+        userCount.textContent = 'You are the only one here.';
+    } else {
+        userCount.textContent = `Users connected: ${count}`;
+        console.log("Received user count:", count);
+    }
+   // Add this line
 });
+
+

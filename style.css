@@ -46,11 +46,11 @@ body {
 
     & > div {
       padding: 8px 12px;
-      border: 1px solid #c4c4c4;
+      /* border: 1px solid #c4c4c4; */
       width: auto;
       margin: 8px;
        border-radius: 5px;
-      background-color: #fff;
+      /* background-color: #fff; */
 
       .username {
         font-size: 12px;
@@ -65,12 +65,37 @@ body {
     }
     .received {
       align-self: flex-start;
-      border-radius: 5px 8px 6px 0;
+      background: none;
+      width: fit-content !important;
     }
     .sent {
       align-self: flex-end;
-      border-radius: 5px 0 6px 8px;
+      
+      background: none;
+    
     }
+    .sent h4{
+        background: none;
+        margin:0 0px 10px 0 ;
+        text-align: right;
+    }
+    .sent p{
+      border-radius: 5px 0 6px 8px;
+      padding: 10px 20px;
+      background: white;
+      margin: 0;
+    }
+    .received h4{
+      background: none;
+      margin:0 0px 10px 0 ;
+      text-align: left;
+  }
+  .received p{
+    border-radius: 5px 0 6px 8px;
+    padding: 10px 20px;
+    background: white;
+    margin: 0;
+  }
   }
 
   form {

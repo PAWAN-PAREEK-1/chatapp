@@ -64,7 +64,7 @@ let appendMessage = (msg, type) => {
 //rescive message  
 
 socket.on('message',(message)=>{
-appendMessage(message,'recived')
+appendMessage(message,'received')
 scrollToBottom()
 
 })

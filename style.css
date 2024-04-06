@@ -177,3 +177,19 @@ body {
     }
   }
 }
+
+.user-list {
+  list-style: none;
+  padding: 0;
+}
+
+.user-list li {
+  margin: 5px 0;
+}
+
+.user-count{
+  position: fixed;
+  top: 1rem;
+  left:2rem;
+}
+

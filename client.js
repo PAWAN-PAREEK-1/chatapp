@@ -2,12 +2,14 @@ const socket = io();
 let messageArea = document.querySelector(".messages");
 let userName;
 
+// Prompt user to enter their username
 do {
     userName = prompt('Please enter your username');
 } while (!userName);
 
 let textarea = document.querySelector("#textarea");
 let sendButton = document.querySelector("button[type='submit']");
+let userCount = document.querySelector(".user-count"); // New
 
 // Function to send message
 let sendMessage = () => {
@@ -66,3 +68,9 @@ socket.on('message', (message) => {
     scrollToBottom();
 });
 
+// Listen for user count update from the server
+// Listen for user count update from the server
+socket.on('user-count', (count) => {
+    userCount.textContent = `Users connected: ${count}`;
+    console.log("Received user count:", count); // Add this line
+});

@@ -23,14 +23,51 @@ app.get('/', (req, res) => {
     res.sendFile(join(__dirname, '/index.html'));
 });
 
+let connectedUsers = [];
+
+
+
 // Socket.io connection
+
+// Define a set to store connected socket IDs
+let connectedSockets = new Set();
+
 io.on('connection', (socket) => {
     console.log("Connected");
+    
+    // Function to emit user count
+    const emitUserCount = () => {
+        // Emit the size of the connectedSockets set as the user count
+        io.emit('user-count', connectedSockets.size);
+        console.log("User count:", connectedSockets.size);
+    };
 
+    // Add the new socket ID to the connectedSockets set
+    connectedSockets.add(socket.id);
+    emitUserCount(); // Emit user count to all clients
+
+    // Handle new-user event
+    socket.on('new-user', (userName) => {
+        // No need to push anything, just emit the user count
+        emitUserCount();
+    });
+
+    // Handle disconnect event
+    socket.on('disconnect', () => {
+        // Remove the disconnected socket ID from the connectedSockets set
+        connectedSockets.delete(socket.id);
+        emitUserCount(); // Emit user count to all clients
+    });
+
+    // Handle message event
     socket.on('message', (message) => {
         socket.broadcast.emit('message', message);
     });
 });
+
+
+
+
 
 // Start the server only if it's not already listening
 if (!server.listening) {

@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import cors from 'cors'
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ const port = process.env.PORT || 3000;
 
 // Serve static files
 app.use(express.static(join(__dirname, '/')));
-
+app.use(cors())
 // Start the server
 server.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
